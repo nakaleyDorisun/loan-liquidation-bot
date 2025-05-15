@@ -46,6 +46,7 @@ bot.use(
       collateralCoinAmount: 0,
       collateralCoinId: "",
       idAndSymbols: [],
+      loans: [],
     }),
     storage: new MemorySessionStorage(),
   })

@@ -9,7 +9,6 @@ export const collateralCoinHandler = async (
 ) => {
   try {
     const collateralCoinAmount = Number(message);
-    console.log(collateralCoinAmount, "collateralCoinAmount");
     if (!isNaN(collateralCoinAmount)) {
       ctx.session.collateralCoinAmount = collateralCoinAmount;
       ctx.deleteMessage();
@@ -36,9 +35,9 @@ export const collateralCoinHandler = async (
         collateralCoinPrice,
         collateralCoinAmount
       );
-      const message = `Вы заняли ${borrowCoinAmount} ${borrowSymbol}, стоимость 1 ${borrowSymbol} - ${borrowCoinPrice}$, общая стоимость займа - ${
+      const message = `Вы заняли ${borrowCoinAmount} ${borrowSymbol}, стоимость 1 ${borrowSymbol} - ${borrowCoinPrice}$\nобщая стоимость займа - ${
         borrowCoinAmount * borrowCoinPrice
-      }$, под обеспечение ${collateralCoinAmount} ${collateralSymbol}, стоимость 1 ${collateralSymbol} - ${collateralCoinPrice}$, общая стоимость обеспечения - ${
+      }$, под обеспечение ${collateralCoinAmount} ${collateralSymbol},\nстоимость 1 ${collateralSymbol} - ${collateralCoinPrice}$, общая стоимость обеспечения - ${
         collateralCoinAmount * collateralCoinPrice
       }$. Начальный LVT ${LVT}`;
       const keyboard = await createInlineKeyboard([
@@ -48,7 +47,27 @@ export const collateralCoinHandler = async (
         reply_markup: keyboard,
         parse_mode: "HTML",
       });
+      ctx.session.loans = [
+        ...ctx.session.loans,
+        {
+          id: "123",
+          borrowCoinId: ctx.session.borrowCoinId,
+          borrowCoinAmount: ctx.session.borrowCoinAmount,
+          collateralCoinAmount: ctx.session.collateralCoinAmount,
+          collateralCoinId: ctx.session.collateralCoinId,
+          inintLVT: LVT,
+        },
+      ];
+      console.log(ctx.session.loans);
+
       ctx.session.borrowCoinInput = false;
+      ctx.session.borrowCoinAmount = 0;
+      ctx.session.borrowCoinId = "";
+      ctx.session.borrowCoinSymbol = null;
+      ctx.session.collateralCoinInput = false;
+      ctx.session.collateralCoinAmount = 0;
+      ctx.session.collateralCoinId = "";
+      ctx.session.collateralCoinSymbol = null;
     } else {
       ctx.deleteMessage();
       ctx.reply(
