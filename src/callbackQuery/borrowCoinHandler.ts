@@ -7,8 +7,14 @@ export const borrowCoinHandler = async (ctx: MyContext, message: string) => {
     if (!isNaN(borrowCoinAmount)) {
       ctx.session.borrowCoinAmount = borrowCoinAmount;
       ctx.deleteMessage();
-      const symbol = ctx.session.borrowCoinSymbol?.slice(1);
-      const message = `Вы заняли ${borrowCoinAmount} ${symbol} `;
+      const borrowSymbol = ctx.session.borrowCoinSymbol?.slice(1);
+      const coin = ctx.session.idAndSymbols.find(
+        (item) => item.symbol === borrowSymbol
+      );
+      if (coin) {
+        ctx.session.borrowCoinId = coin.id;
+      }
+      const message = `Вы заняли ${borrowCoinAmount} ${borrowSymbol} `;
       const keyboard = await createInlineKeyboard([
         { text: "Выбрать обеспечение", callback_data: "collateral" },
       ]);

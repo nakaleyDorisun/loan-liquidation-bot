@@ -11,6 +11,12 @@ export const collateralCoinHandler = async (
       ctx.session.collateralCoinAmount = collateralCoinAmount;
       ctx.deleteMessage();
       const collateralSymbol = ctx.session.collateralCoinSymbol?.slice(1);
+      const coin = ctx.session.idAndSymbols.find(
+        (item) => item.symbol === collateralSymbol
+      );
+      if (coin) {
+        ctx.session.borrowCoinId = coin.id;
+      }
       const borrowSymbol = ctx.session.borrowCoinSymbol?.slice(1);
       const borrowCoinAmount = ctx.session.borrowCoinAmount;
       // const borrowCost =

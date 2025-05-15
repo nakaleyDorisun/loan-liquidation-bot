@@ -5,6 +5,11 @@ export interface MyContext extends Context {
   session: SessionData;
 }
 
+export type idAndSymbolsItem ={
+id:string,
+symbol:string,
+} 
+
 export type SessionData = {
   data: FetchedDataItemType[];
   user: number | null;
@@ -16,6 +21,7 @@ export type SessionData = {
   collateralCoinSymbol: string | null;
   collateralCoinAmount: number;
   collateralCoinId: string | null;
+  idAndSymbols:idAndSymbolsItem[]
 };
 
 export type MenuItem = {

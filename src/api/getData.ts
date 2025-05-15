@@ -32,9 +32,15 @@ export type ResponseType = {
 export const getData = async (ctx: MyContext) => {
   try {
     const response = await fetch(baseURL);
-    const cryptoRates: ResponseType = await response.json();
-    cryptoRates;
-    ctx.session.data = cryptoRates.data;
-    return cryptoRates.data;
+    const allCoins: ResponseType = await response.json();
+    const idAndSymbols = allCoins.data.map((coin) => {
+      return {
+        id: coin.id,
+        symbol: coin.symbol,
+      };
+    });
+    ctx.session.idAndSymbols = idAndSymbols;
+    ctx.session.data = allCoins.data;
+    return allCoins.data;
   } catch (error) {}
 };

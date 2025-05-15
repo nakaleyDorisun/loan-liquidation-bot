@@ -40,9 +40,12 @@ bot.use(
       borrowCoinSymbol: null,
       borrowCoinInput: false,
       borrowCoinAmount: 0,
+      borrowCoinId: null,
       collateralCoinSymbol: null,
       collateralCoinInput: false,
       collateralCoinAmount: 0,
+      collateralCoinId: null,
+      idAndSymbols: [],
     }),
     storage: new MemorySessionStorage(),
   })
