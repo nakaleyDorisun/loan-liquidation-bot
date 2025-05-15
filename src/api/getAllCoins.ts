@@ -29,7 +29,7 @@ export type ResponseType = {
   };
 };
 
-export const getData = async (ctx: MyContext) => {
+export const getAllCoins = async (ctx: MyContext) => {
   try {
     const response = await fetch(baseURL);
     const allCoins: ResponseType = await response.json();

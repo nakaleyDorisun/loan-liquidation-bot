@@ -1,11 +1,11 @@
-import { getData } from "@/api/getData";
+import { getAllCoins } from "@/api/getAllCoins";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
 export const collateralMenuCQ = async (ctx: MyContext) => {
   try {
     await ctx.deleteMessage();
-    const response = await getData(ctx);
+    const response = await getAllCoins(ctx);
     if (response) {
       const text = response
         .map(

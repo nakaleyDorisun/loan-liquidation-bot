@@ -1,14 +1,14 @@
-import { FetchedDataItemType } from "@/api/getData";
+import { FetchedDataItemType } from "@/api/getAllCoins";
 import { Context } from "grammy";
 
 export interface MyContext extends Context {
   session: SessionData;
 }
 
-export type idAndSymbolsItem ={
-id:string,
-symbol:string,
-} 
+export type idAndSymbolsItem = {
+  id: string;
+  symbol: string;
+};
 
 export type SessionData = {
   data: FetchedDataItemType[];
@@ -16,12 +16,12 @@ export type SessionData = {
   borrowCoinSymbol: string | null;
   borrowCoinInput: boolean;
   borrowCoinAmount: number;
-  borrowCoinId: string | null;
+  borrowCoinId: string;
   collateralCoinInput: boolean;
   collateralCoinSymbol: string | null;
   collateralCoinAmount: number;
-  collateralCoinId: string | null;
-  idAndSymbols:idAndSymbolsItem[]
+  collateralCoinId: string;
+  idAndSymbols: idAndSymbolsItem[];
 };
 
 export type MenuItem = {

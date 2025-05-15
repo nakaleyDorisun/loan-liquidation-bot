@@ -1,11 +1,11 @@
-import { getData } from "@/api/getData";
+import { getAllCoins } from "@/api/getAllCoins";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
 export const borrowMenuCQ = async (ctx: MyContext) => {
   try {
     await ctx.deleteMessage();
-    const response = await getData(ctx);
+    const response = await getAllCoins(ctx);
     if (response) {
       const text = response
         .map(
@@ -31,7 +31,7 @@ export const borrowMenuCQ = async (ctx: MyContext) => {
       });
     }
   } catch (error) {
-    console.error(error, "createMenuCQ");
+    console.error(error, "borrowMenuCQ");
   }
 };
 
@@ -43,7 +43,6 @@ export const borrowCoin = async (ctx: MyContext) => {
     await ctx.reply(`Введит количество ${symbol}, которое вы заняли`);
     ctx.session.borrowCoinInput = true;
     ctx.session.collateralCoinInput = false;
-    const messageInput = ctx.message?.text ? ctx.message.text : "";
   } catch (error) {
     console.error(error, "borrowCoin");
   }
