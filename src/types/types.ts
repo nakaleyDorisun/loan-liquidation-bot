@@ -7,6 +7,15 @@ export interface MyContext extends Context {
 
 export type SessionData = {
   data: FetchedDataItemType[];
+  user: number | null;
+  borrowCoinSymbol: string | null;
+  borrowCoinInput: boolean;
+  borrowCoinAmount: number;
+  borrowCoinId: string | null;
+  collateralCoinInput: boolean;
+  collateralCoinSymbol: string | null;
+  collateralCoinAmount: number;
+  collateralCoinId: string | null;
 };
 
 export type MenuItem = {

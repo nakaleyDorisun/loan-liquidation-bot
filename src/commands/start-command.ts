@@ -6,6 +6,9 @@ export const startCommand = async (ctx: MyContext) => {
   try {
     const menu = menus["start"];
     const senderID = ctx.message?.from.id;
+    if (senderID) {
+      ctx.session.user = senderID;
+    }
     const firstName = ctx.from?.first_name;
     const keyboard = await createInlineKeyboard(menu.buttons);
     const startMessage = await ctx.reply(

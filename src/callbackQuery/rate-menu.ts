@@ -12,7 +12,7 @@ export const rateMenuCQ = async (ctx: MyContext) => {
     const response = await getData(ctx);
     if (response) {
       const text = response
-        .map((item) => `${item.symbol} ----- ${item.price_usd}\n\n`)
+        .map((item) => `${item.symbol} ----- ${item.price_usd} $\n\n`)
         .join("");
       const message = await ctx.reply(text, {
         reply_markup: keyboard,

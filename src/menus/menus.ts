@@ -17,7 +17,7 @@ export const menus: IMenus = {
     buttons: [
       {
         text: "Создать займ",
-        callback_data: "create",
+        callback_data: "borrow",
       },
       {
         text: "Мои Займы",
