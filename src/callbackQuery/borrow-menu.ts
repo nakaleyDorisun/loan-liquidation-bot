@@ -38,9 +38,9 @@ export const borrowMenuCQ = async (ctx: MyContext) => {
 export const borrowCoin = async (ctx: MyContext) => {
   try {
     const symbol = ctx.session.borrowCoinSymbol?.slice(1);
-    await ctx.answerCallbackQuery({ text: `${symbol} выбрано` });
+    await ctx.answerCallbackQuery({ text: `$${symbol} выбрано` });
     await ctx.deleteMessage();
-    await ctx.reply(`Введит количество ${symbol}, которое вы заняли`);
+    await ctx.reply(`Введит количество $${symbol}, которое вы заняли`);
     ctx.session.borrowCoinInput = true;
     ctx.session.collateralCoinInput = false;
   } catch (error) {

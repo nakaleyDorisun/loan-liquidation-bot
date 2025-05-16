@@ -33,6 +33,6 @@ export const getCoinByID = async (ctx: MyContext, id: string) => {
   try {
     const response = await fetch(baseURL + id);
     const coin: FetchedDataItemType[] = await response.json();
-    return coin[0].price_usd;
+    return Number(coin[0].price_usd);
   } catch (error) {}
 };

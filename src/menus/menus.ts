@@ -21,7 +21,7 @@ export const menus: IMenus = {
       },
       {
         text: "Мои Займы",
-        callback_data: "my-loans",
+        callback_data: "loans",
       },
       {
         text: "Курс криптовалют",
@@ -36,6 +36,16 @@ export const menus: IMenus = {
   rate: {
     text: "Курсы",
     callbackQuery: "rate",
+    buttons: [
+      {
+        text: "Назад",
+        callback_data: "main",
+      },
+    ],
+  },
+  loans: {
+    text: "Мои займы",
+    callbackQuery: "loans",
     buttons: [
       {
         text: "Назад",

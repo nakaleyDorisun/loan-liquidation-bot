@@ -6,12 +6,8 @@ import { getLVT } from "./getLVT";
 
 import * as uuid from "uuid";
 import { clearSession } from "./clearSession";
-import { alertFn } from "@/utils/alertFn";
 
-export const collateralCoinHandler = async (
-  ctx: MyContext,
-  message: string
-) => {
+export const alertLVTHandler = async (ctx: MyContext, message: string) => {
   try {
     const collateralCoinAmount = Number(message);
     if (!isNaN(collateralCoinAmount)) {
@@ -44,8 +40,7 @@ export const collateralCoinHandler = async (
         collateralCoinPrice,
         collateralCoinAmount
       );
-      const alertLVT = 0.8;
-      const message = `Вы заняли ${borrowCoinAmount} $${borrowSymbol}\nстоимость 1 $${borrowSymbol} - ${borrowCoinPrice}$\nобщая стоимость займа - ${borrowCoinCost}$\n\nПод обеспечение ${collateralCoinAmount} $${collateralSymbol}\nстоимость 1 $${collateralSymbol} - ${collateralCoinPrice}$\nобщая стоимость обеспечения - ${collateralCoinCost}$\n\nНачальный LVT ${LVT}\nAlert LVT: ${alertLVT}`;
+      const message = `Вы заняли ${borrowCoinAmount} $${borrowSymbol}, стоимость 1 $${borrowSymbol} - ${borrowCoinPrice}$\nобщая стоимость займа - ${borrowCoinCost}$, под обеспечение ${collateralCoinAmount} $${collateralSymbol},\nстоимость 1 $${collateralSymbol} - ${collateralCoinPrice}$, общая стоимость обеспечения - ${collateralCoinCost}$. Начальный LVT ${LVT}`;
       const keyboard = await createInlineKeyboard([
         { text: "В главное меню", callback_data: "main" },
       ]);
@@ -53,12 +48,10 @@ export const collateralCoinHandler = async (
         reply_markup: keyboard,
         parse_mode: "HTML",
       });
-
-      const id = uuid.v4();
       ctx.session.loans = [
         ...ctx.session.loans,
         {
-          id: id,
+          id: uuid.v4(),
           borrowCoinId: ctx.session.borrowCoinId,
           borrowCoinAmount: ctx.session.borrowCoinAmount,
           borrowCoinSymbol: ctx.session.borrowCoinSymbol.slice(1),
@@ -68,10 +61,9 @@ export const collateralCoinHandler = async (
           collateralCoinSymbol: ctx.session.collateralCoinSymbol.slice(1),
           collateralCoinInitialPrice: collateralCoinPrice,
           inintLVT: LVT,
-          alertLVT: alertLVT,
+          alertLVT: 0.8,
         },
       ];
-      alertFn(ctx, id);
 
       await clearSession(ctx);
     } else {

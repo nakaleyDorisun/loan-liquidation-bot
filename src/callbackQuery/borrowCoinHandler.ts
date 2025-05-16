@@ -1,3 +1,5 @@
+import { getCoinByID } from "@/api/getCoinByID";
+import { borrowCoin } from "./borrow-menu";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
@@ -14,7 +16,13 @@ export const borrowCoinHandler = async (ctx: MyContext, message: string) => {
       if (coin) {
         ctx.session.borrowCoinId = coin.id;
       }
-      const message = `Вы заняли ${borrowCoinAmount} ${borrowSymbol} `;
+      const borrowCoinId = ctx.session.borrowCoinId;
+      const borrowCoinPrice = await getCoinByID(ctx, borrowCoinId);
+      let borrowCoinCost = 0;
+      if (borrowCoinPrice) {
+        borrowCoinCost = borrowCoinAmount * borrowCoinPrice!;
+      }
+      const message = `Вы заняли ${borrowCoinAmount} $${borrowSymbol} - стоимость ${borrowCoinCost}$`;
       const keyboard = await createInlineKeyboard([
         { text: "Выбрать обеспечение", callback_data: "collateral" },
       ]);

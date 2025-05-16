@@ -6,13 +6,12 @@ import { MyContext } from "@/types/types";
 export const rateMenuCQ = async (ctx: MyContext) => {
   try {
     const menu = menus["rate"];
-
     const keyboard = await createInlineKeyboard(menu.buttons);
     await ctx.deleteMessage();
     const response = await getAllCoins(ctx);
     if (response) {
       const text = response
-        .map((item) => `${item.symbol} ----- ${item.price_usd} $\n\n`)
+        .map((item) => `$${item.symbol} ----- ${item.price_usd} $\n\n`)
         .join("");
       const message = await ctx.reply(text, {
         reply_markup: keyboard,

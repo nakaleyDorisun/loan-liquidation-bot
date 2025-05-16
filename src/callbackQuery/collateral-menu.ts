@@ -10,7 +10,7 @@ export const collateralMenuCQ = async (ctx: MyContext) => {
       const text = response
         .map(
           (item) =>
-            `${item.symbol} ----- ${item.name} ----- ${item.price_usd} $\n\n`
+            `$${item.symbol} ----- ${item.name} ----- ${item.price_usd} $\n\n`
         )
         .join("");
       const menuMessage = `${text}\nВыберите монету, которую вы хотите положить в обеспечение:`;
@@ -38,14 +38,13 @@ export const collateralMenuCQ = async (ctx: MyContext) => {
 export const collateralCoin = async (ctx: MyContext) => {
   try {
     const symbol = ctx.session.collateralCoinSymbol?.slice(1);
-    await ctx.answerCallbackQuery({ text: `${symbol} выбрано` });
+    await ctx.answerCallbackQuery({ text: `$${symbol} выбрано` });
     await ctx.deleteMessage();
     await ctx.reply(
-      `Введит количество ${symbol}, которое вы положили в обеспечение`
+      `Введит количество $${symbol}, которое вы положили в обеспечение`
     );
     ctx.session.collateralCoinInput = true;
     ctx.session.borrowCoinInput = false;
-    const messageInput = ctx.message?.text ? ctx.message.text : "";
   } catch (error) {
     console.error(error, "collateralCoin");
   }

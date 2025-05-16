@@ -1,6 +1,6 @@
 import { MyContext } from "@/types/types";
 
-const baseURL = "https://api.coinlore.net/api/tickers/?start=0&limit=10";
+const baseURL = "https://api.coinlore.net/api/tickers/?start=0&limit=15";
 
 export type FetchedDataItemType = {
   id: string;

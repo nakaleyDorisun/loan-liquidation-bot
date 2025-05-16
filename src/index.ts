@@ -19,6 +19,9 @@ import {
   collateralCoin,
   collateralMenuCQ,
 } from "./callbackQuery/collateral-menu";
+import { loansMenuCQ } from "./callbackQuery/loans-menu";
+import { alertLVTHandler } from "./callbackQuery/alertLVTHandler";
+import { deleteLoanByID } from "./callbackQuery/deleteLoanById";
 
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
@@ -37,14 +40,16 @@ bot.use(
     initial: (): SessionData => ({
       data: [],
       user: null,
-      borrowCoinSymbol: null,
+      borrowCoinSymbol: "",
       borrowCoinInput: false,
       borrowCoinAmount: 0,
       borrowCoinId: "",
-      collateralCoinSymbol: null,
+      collateralCoinSymbol: "",
       collateralCoinInput: false,
       collateralCoinAmount: 0,
       collateralCoinId: "",
+      alertLVT: 0.8,
+      alertLVTInput: false,
       idAndSymbols: [],
       loans: [],
     }),
@@ -60,6 +65,7 @@ bot.callbackQuery("main", mainMenuCQ);
 bot.callbackQuery("rate", rateMenuCQ);
 bot.callbackQuery("borrow", borrowMenuCQ);
 bot.callbackQuery("collateral", collateralMenuCQ);
+bot.callbackQuery("loans", loansMenuCQ);
 
 bot.on("message:text", async (ctx) => {
   const message = ctx.message?.text;
@@ -69,7 +75,8 @@ bot.on("message:text", async (ctx) => {
   } else if (ctx.session.collateralCoinInput && message) {
     await collateralCoinHandler(ctx, message);
     return;
-  } else {
+  } else if (ctx.session.alertLVTInput && message) {
+    await alertLVTHandler(ctx, message);
     return;
   }
 });
@@ -79,6 +86,17 @@ bot.on("callback_query", async (ctx, next) => {
   if (data?.startsWith("$")) {
     ctx.session.borrowCoinSymbol = data;
     await borrowCoin(ctx);
+    return;
+  }
+  await next();
+});
+
+bot.on("callback_query", async (ctx, next) => {
+  const data = ctx.callbackQuery?.data;
+  if (data?.startsWith("_")) {
+    const id = data.slice(1);
+    deleteLoanByID(ctx, id);
+    await ctx.answerCallbackQuery("Займ удален");
     return;
   }
   await next();
