@@ -15,19 +15,26 @@ export const alertFn = async (ctx: MyContext, id: string) => {
   const collateralCoinAmount = loan[0].collateralCoinAmount;
 
   const alertLVT = loan[0].alertLVT;
-  let currentTLV = 0;
-  if (borrowCoinPrice && collateralCoinPrice) {
-    currentTLV = getLVT(
-      borrowCoinPrice,
-      borrowCoinAmount,
-      collateralCoinPrice,
-      collateralCoinAmount
-    );
-  }
+
   if (userID) {
-    await ctx.api.sendMessage(
-      userID,
-      `ты пидор а твой currentTLV ${currentTLV}`
-    );
   }
+  const alert = setInterval(async () => {
+    let currentTLV = 0;
+    if (borrowCoinPrice && collateralCoinPrice) {
+      currentTLV = getLVT(
+        borrowCoinPrice,
+        borrowCoinAmount,
+        collateralCoinPrice,
+        collateralCoinAmount
+      );
+    }
+    if (currentTLV > 0.8 && userID) {
+      await ctx.api.sendMessage(
+        userID,
+        `эй пидор, проснись, твой currentTLV ${currentTLV}, а это выше 0,8, тоби пизда (почти)`
+      );
+    }
+  }, 10000);
+  const length = ctx.session.loans.length;
+  ctx.session.loans[length - 1].alertInterval = alert;
 };

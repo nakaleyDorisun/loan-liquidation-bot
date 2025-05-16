@@ -13,7 +13,7 @@ export const collateralCoinHandler = async (
   message: string
 ) => {
   try {
-    const collateralCoinAmount = Number(message);
+    const collateralCoinAmount = Number(message.trim());
     if (!isNaN(collateralCoinAmount)) {
       ctx.session.collateralCoinAmount = collateralCoinAmount;
       ctx.deleteMessage();
@@ -69,6 +69,7 @@ export const collateralCoinHandler = async (
           collateralCoinInitialPrice: collateralCoinPrice,
           inintLVT: LVT,
           alertLVT: alertLVT,
+          alertInterval: undefined,
         },
       ];
       alertFn(ctx, id);

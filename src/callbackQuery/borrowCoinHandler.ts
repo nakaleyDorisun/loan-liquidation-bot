@@ -5,7 +5,7 @@ import { MyContext } from "@/types/types";
 
 export const borrowCoinHandler = async (ctx: MyContext, message: string) => {
   try {
-    const borrowCoinAmount = Number(message);
+    const borrowCoinAmount = Number(message.trim());
     if (!isNaN(borrowCoinAmount)) {
       ctx.session.borrowCoinAmount = borrowCoinAmount;
       ctx.deleteMessage();

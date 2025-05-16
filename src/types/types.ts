@@ -24,6 +24,7 @@ export type Loan = {
   collateralCoinInitialPrice: number;
   inintLVT: number;
   alertLVT: number;
+  alertInterval: NodeJS.Timeout | undefined;
 };
 
 export type SessionData = {
