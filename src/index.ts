@@ -20,16 +20,23 @@ import {
   collateralMenuCQ,
 } from "./callbackQuery/collateral/collateral-menu";
 import { loansMenuCQ } from "./callbackQuery/loans-menu";
-import { alertLVTHandler } from "./callbackQuery/edit-loan/alertLVTHandler";
+import { alertLTVHandler } from "./callbackQuery/edit-loan/alertLTVHandler";
 import { deleteLoanByID } from "./utils/deleteLoanById";
-import { alertLVT, editLoanMenuCQ } from "./callbackQuery/edit-loan/edit-loan-menu";
+import {
+  alertLTV,
+  editLoanMenuCQ,
+} from "./callbackQuery/edit-loan/edit-loan-menu";
 import {
   borrowCoinSymbol,
   collateralCoinSymbol,
   deleteSymbol,
   editSymbol,
-  lvtSymbol,
+  LTVSymbol,
+  turnOffAlertSymbol,
+  turnOnAlertSymbol,
 } from "./constants/symbols";
+import { turnOffAlert } from "./callbackQuery/edit-loan/turnOffAlert";
+import { turnOnAlert } from "./callbackQuery/edit-loan/turnOnAlert";
 
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
@@ -56,8 +63,8 @@ bot.use(
       collateralCoinInput: false,
       collateralCoinAmount: 0,
       collateralCoinId: "",
-      alertLVT: 0.8,
-      alertLVTInput: false,
+      alertLTV: 0.8,
+      alertLTVInput: false,
       idAndSymbols: [],
       loans: [],
       curretnLoanId: "",
@@ -84,19 +91,41 @@ bot.on("message:text", async (ctx, next) => {
   } else if (ctx.session.collateralCoinInput && message) {
     await collateralCoinHandler(ctx, message);
     return;
-  } else if (ctx.session.alertLVTInput && message) {
-    await alertLVTHandler(ctx, message);
+  } else if (ctx.session.alertLTVInput && message) {
+    await alertLTVHandler(ctx, message);
     return;
   }
   await next();
 });
 
-/////alert lvt
+/////alert LTV
 bot.on("callback_query", async (ctx, next) => {
   const data = ctx.callbackQuery?.data;
-  if (data?.startsWith(lvtSymbol)) {
+  if (data?.startsWith(LTVSymbol)) {
     const id = data.slice(1);
-    await alertLVT(ctx, id);
+    await alertLTV(ctx, id);
+    return;
+  }
+  await next();
+});
+
+/////turn off alert LTV
+bot.on("callback_query", async (ctx, next) => {
+  const data = ctx.callbackQuery?.data;
+  if (data?.startsWith(turnOffAlertSymbol)) {
+    const id = data.slice(1);
+    await turnOffAlert(ctx, id);
+    return;
+  }
+  await next();
+});
+
+/////turn on alert LTV
+bot.on("callback_query", async (ctx, next) => {
+  const data = ctx.callbackQuery?.data;
+  if (data?.startsWith(turnOnAlertSymbol)) {
+    const id = data.slice(1);
+    await turnOnAlert(ctx, id);
     return;
   }
   await next();

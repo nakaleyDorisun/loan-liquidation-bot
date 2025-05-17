@@ -2,7 +2,7 @@ import { mathRound } from "@/utils/mathRound";
 import { getCoinByID } from "@/api/getCoinByID";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
-import { getLVT } from "../../utils/getLVT";
+import { getLTV } from "../../utils/getLTV";
 
 import * as uuid from "uuid";
 import { clearSession } from "@/utils/clearSession";
@@ -38,14 +38,14 @@ export const collateralCoinHandler = async (
         collateralCoinAmount * collateralCoinPrice
       );
 
-      const LVT = getLVT(
+      const LTV = getLTV(
         borrowCoinPrice,
         borrowCoinAmount,
         collateralCoinPrice,
         collateralCoinAmount
       );
-      const alertLVT = 0.8;
-      const message = `Вы заняли ${borrowCoinAmount} $${borrowSymbol}\nстоимость 1 $${borrowSymbol} - ${borrowCoinPrice}$\nобщая стоимость займа - ${borrowCoinCost}$\n\nПод обеспечение ${collateralCoinAmount} $${collateralSymbol}\nстоимость 1 $${collateralSymbol} - ${collateralCoinPrice}$\nобщая стоимость обеспечения - ${collateralCoinCost}$\n\nНачальный LVT ${LVT}\nAlert LVT: ${alertLVT}`;
+      const alertLTV = 0.8;
+      const message = `Вы заняли ${borrowCoinAmount} $${borrowSymbol}\nстоимость 1 $${borrowSymbol} - ${borrowCoinPrice}$\nобщая стоимость займа - ${borrowCoinCost}$\n\nПод обеспечение ${collateralCoinAmount} $${collateralSymbol}\nстоимость 1 $${collateralSymbol} - ${collateralCoinPrice}$\nобщая стоимость обеспечения - ${collateralCoinCost}$\n\nНачальный LTV ${LTV}\nAlert LTV: ${alertLTV}`;
       const keyboard = await createInlineKeyboard([
         { text: "В главное меню", callback_data: "main" },
       ]);
@@ -67,8 +67,8 @@ export const collateralCoinHandler = async (
           collateralCoinId: ctx.session.collateralCoinId,
           collateralCoinSymbol: ctx.session.collateralCoinSymbol.slice(1),
           collateralCoinInitialPrice: collateralCoinPrice,
-          inintLVT: LVT,
-          alertLVT: alertLVT,
+          inintLTV: LTV,
+          alertLTV: alertLTV,
           alertInterval: undefined,
         },
       ];

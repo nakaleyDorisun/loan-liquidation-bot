@@ -1,7 +1,7 @@
 import { getCoinByID } from "@/api/getCoinByID";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
-import { getLVT } from "../utils/getLVT";
+import { getLTV } from "../utils/getLTV";
 import { editSymbol } from "@/constants/symbols";
 import { mainMenuCQ } from "./main-menu";
 
@@ -38,9 +38,9 @@ export const loansMenuCQ = async (ctx: MyContext) => {
     );
     const collateralCoinAmount = ctx.session.loans[0].collateralCoinAmount;
 
-    let currentLVT = 0;
+    let currentLTV = 0;
     if (borrowCoinCurrentPrice && collateralCoinCurrentPrice) {
-      currentLVT = getLVT(
+      currentLTV = getLTV(
         borrowCoinCurrentPrice,
         borrowCoinAmount,
         collateralCoinCurrentPrice,
@@ -57,7 +57,7 @@ export const loansMenuCQ = async (ctx: MyContext) => {
           const collateralCoinCurrentPrice = Number(
             await getCoinByID(ctx, loan.collateralCoinId)
           );
-          const currentLVT = getLVT(
+          const currentLTV = getLTV(
             borrowCoinCurrentPrice,
             loan.borrowCoinAmount,
             collateralCoinCurrentPrice,
@@ -71,9 +71,11 @@ export const loansMenuCQ = async (ctx: MyContext) => {
             loan.collateralCoinAmount
           } $${loan.collateralCoinSymbol}\nцена покупки ${
             loan.collateralCoinInitialPrice
-          }$\nтекущая цена ${collateralCoinCurrentPrice}$\n\n- initial LVT: ${
-            loan.inintLVT
-          }\n\n- current LVT: ${currentLVT}\n\n- alert LVT: ${loan.alertLVT}`;
+          }$\nтекущая цена ${collateralCoinCurrentPrice}$\n\n- initial LTV: ${
+            loan.inintLTV
+          }\n\n- current LTV: ${currentLTV}\n\n- alert LTV: ${
+            loan.alertLTV
+          }\n\n_______________________________________`;
         }
       );
 

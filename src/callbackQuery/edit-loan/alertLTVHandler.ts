@@ -2,14 +2,14 @@ import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 import { alertFn } from "@/utils/alertFn";
 
-export const alertLVTHandler = async (ctx: MyContext, message: string) => {
+export const alertLTVHandler = async (ctx: MyContext, message: string) => {
   try {
-    const alertLVTMessage = Number(message.trim());
-    if (!isNaN(alertLVTMessage) && ctx.session.curretnLoanId) {
+    const alertLTVMessage = Number(message.trim());
+    if (!isNaN(alertLTVMessage) && ctx.session.curretnLoanId) {
       const loanId = ctx.session.curretnLoanId;
 
-      ctx.session.loans.filter((loan) => loan.id === loanId)[0].alertLVT =
-        alertLVTMessage;
+      ctx.session.loans.filter((loan) => loan.id === loanId)[0].alertLTV =
+        alertLTVMessage;
 
       clearInterval(
         ctx.session.loans.filter((loan) => loan.id === loanId)[0].alertInterval
@@ -17,7 +17,7 @@ export const alertLVTHandler = async (ctx: MyContext, message: string) => {
 
       await alertFn(ctx, loanId);
       ctx.deleteMessage();
-      const message = `Вы установили новый alertLVT: ${alertLVTMessage}`;
+      const message = `Вы установили новый alertLTV: ${alertLTVMessage}`;
       const keyboard = await createInlineKeyboard([
         { text: "Мои займы", callback_data: "loans" },
       ]);
@@ -25,7 +25,7 @@ export const alertLVTHandler = async (ctx: MyContext, message: string) => {
         reply_markup: keyboard,
         parse_mode: "HTML",
       });
-      ctx.session.alertLVTInput = false;
+      ctx.session.alertLTVInput = false;
     } else {
       ctx.deleteMessage();
       ctx.reply(

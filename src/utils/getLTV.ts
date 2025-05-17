@@ -1,6 +1,6 @@
 import { mathRound } from "./mathRound";
 
-export const getLVT = (
+export const getLTV = (
   borrowCoinPrice: number,
   borrowCoinAmount: number,
   collateralCoinPrice: number,

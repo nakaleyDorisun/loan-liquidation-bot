@@ -1,11 +1,16 @@
 import { getCoinByID } from "@/api/getCoinByID";
 import { MyContext } from "@/types/types";
-import { getLVT } from "@/utils/getLVT";
+import { getLTV } from "@/utils/getLTV";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
-import { deleteSymbol, lvtSymbol } from "@/constants/symbols";
+import {
+  deleteSymbol,
+  LTVSymbol,
+  turnOffAlertSymbol,
+  turnOnAlertSymbol,
+} from "@/constants/symbols";
 
 export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
-  const loan = ctx.session.loans.filter((loan) => (loan.id = id));
+  const loan = ctx.session.loans.filter((loan) => loan.id === id);
 
   const borrowCoinCurrentPrice = Number(
     await getCoinByID(ctx, loan[0].borrowCoinId)
@@ -13,34 +18,40 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
   const collateralCoinCurrentPrice = Number(
     await getCoinByID(ctx, loan[0].collateralCoinId)
   );
-  const currentLVT = getLVT(
+  const currentLTV = getLTV(
     borrowCoinCurrentPrice,
     loan[0].borrowCoinAmount,
     collateralCoinCurrentPrice,
     loan[0].collateralCoinAmount
   );
 
-  const text = `Займ:\n\n- borrow: ${loan[0].borrowCoinAmount} $${loan[0].borrowCoinSymbol}\nцена покупки ${loan[0].borrowCoinInitialPrice}$\nтекущая цена ${borrowCoinCurrentPrice}$\n\n- collateral: ${loan[0].collateralCoinAmount} $${loan[0].collateralCoinSymbol}\nцена покупки ${loan[0].collateralCoinInitialPrice}$\nтекущая цена ${collateralCoinCurrentPrice}$\n\n- initial LVT: ${loan[0].inintLVT}\n\n- current LVT: ${currentLVT}\n\n- alert LVT: ${loan[0].alertLVT}`;
+  console.log(loan[0].alertInterval, "loan[0].alertInterval");
+  const isAlert = loan[0].alertInterval
+    ? "Уведомления включены🔔"
+    : "Уведомления отключены🔕";
 
-  const buttonsLoan = ctx.session.loans.map((item) => {
+  const text = `Займ:\n\n- borrow: ${loan[0].borrowCoinAmount} $${loan[0].borrowCoinSymbol}\nцена покупки ${loan[0].borrowCoinInitialPrice}$\nтекущая цена ${borrowCoinCurrentPrice}$\n\n- collateral: ${loan[0].collateralCoinAmount} $${loan[0].collateralCoinSymbol}\nцена покупки ${loan[0].collateralCoinInitialPrice}$\nтекущая цена ${collateralCoinCurrentPrice}$\n\n- initial LTV: ${loan[0].inintLTV}\n\n- current LTV: ${currentLTV}\n\n- alert LTV: ${loan[0].alertLTV}\n\n${isAlert}`;
+
+  const buttonsLoan = loan.map((item) => {
     return {
       text: `❌ $${item.borrowCoinSymbol} + $${item.collateralCoinSymbol}`,
       callback_data: deleteSymbol + item.id,
     };
   });
+
   const buttons = [
     ...buttonsLoan,
     {
-      text: "Редактировать Alert LVT",
-      callback_data: lvtSymbol + loan[0].id,
+      text: "Редактировать Alert LTV",
+      callback_data: LTVSymbol + loan[0].id, /// или + id?
     },
     {
       text: "Включить🔔",
-      callback_data: "loans",
+      callback_data: turnOnAlertSymbol + id,
     },
     {
       text: "Выключить🔕",
-      callback_data: "loans",
+      callback_data: turnOffAlertSymbol + id, /// или loan[0].id?
     },
     {
       text: "Назад",
@@ -55,15 +66,15 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
   });
 };
 
-export const alertLVT = async (ctx: MyContext, id: string) => {
+export const alertLTV = async (ctx: MyContext, id: string) => {
   try {
     await ctx.deleteMessage();
-    await ctx.reply("Введите значение alertLVTHandler");
+    await ctx.reply("Введите значение alertLTVHandler");
     ctx.session.curretnLoanId = id;
-    ctx.session.alertLVTInput = true;
+    ctx.session.alertLTVInput = true;
     ctx.session.borrowCoinInput = false;
     ctx.session.collateralCoinInput = false;
   } catch (error) {
-    console.log(error, "alertLVT");
+    console.log(error, "alertLTV");
   }
 };

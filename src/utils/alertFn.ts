@@ -1,7 +1,8 @@
 import { getCoinByID } from "@/api/getCoinByID";
-import { getLVT } from "@/utils/getLVT";
+import { getLTV } from "@/utils/getLTV";
 import { MyContext } from "@/types/types";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
+import { turnOffAlertSymbol, turnOnAlertSymbol } from "@/constants/symbols";
 
 export const alertFn = async (ctx: MyContext, id: string) => {
   try {
@@ -19,29 +20,37 @@ export const alertFn = async (ctx: MyContext, id: string) => {
     const collateralCoinPrice = await getCoinByID(ctx, collateralCoinId);
     const collateralCoinAmount = loan[0].collateralCoinAmount;
 
-    const alertLVT = loan[0].alertLVT;
+    const alertLTV = loan[0].alertLTV;
 
     const alert = setInterval(async () => {
       let currentLTV = 0;
       if (borrowCoinPrice && collateralCoinPrice) {
-        currentLTV = getLVT(
+        currentLTV = getLTV(
           borrowCoinPrice,
           borrowCoinAmount,
           collateralCoinPrice,
           collateralCoinAmount
         );
       }
-      if (currentLTV > alertLVT && userID) {
+      if (currentLTV > alertLTV && userID) {
         const buttons = [
           {
             text: "Выключить🔕",
+            callback_data: turnOffAlertSymbol + id,
+          },
+          {
+            text: "Включить🔔",
+            callback_data: turnOnAlertSymbol + id,
+          },
+          {
+            text: "Мои Займы💼",
             callback_data: "loans",
           },
         ];
         const keyboard = await createInlineKeyboard(buttons);
         await ctx.api.sendMessage(
           userID,
-          `Эй пидор, проснись🦄🎊🎉\nпо твоему займу ${borrowCoinSymbol}-${collateralCoinSymbol}🍀🍀🍀\nна сумму ${borrowCoinCost}$\ncurrentLTV ${currentLTV}🌸🌸🌸\nа это выше ${alertLVT}🐶🐱🐼\nтоби пизда (почти)💖💘🌈`,
+          `Эй пидор, проснись🦄🎊🎉\nпо твоему займу ${borrowCoinSymbol}-${collateralCoinSymbol}🍀🍀🍀\nна сумму ${borrowCoinCost}$\ncurrentLTV ${currentLTV}🌸🌸🌸\nа это выше ${alertLTV}🐶🐱🐼\nтоби пизда (почти)💖💘🌈`,
           {
             reply_markup: keyboard,
             parse_mode: "HTML",
@@ -53,8 +62,9 @@ export const alertFn = async (ctx: MyContext, id: string) => {
         );
       }
     }, 10000);
-    const length = ctx.session.loans.length;
-    ctx.session.loans[length - 1].alertInterval = alert;
+    // const length = ctx.session.loans.length;
+    // ctx.session.loans[length - 1].alertInterval = alert;
+    ctx.session.loans.filter((loan) => loan.id === id)[0].alertInterval = alert;
   } catch (error) {
     console.log(error);
   }
