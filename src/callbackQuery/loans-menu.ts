@@ -68,6 +68,8 @@ export const loansMenuCQ = async (ctx: MyContext) => {
             ? "Уведомления включены🔔"
             : "Уведомления отключены🔕";
 
+          const repetAlertsMessage = loan.repetAlerts / 1000;
+
           return `Займ №${index + 1}:\n\n- borrow: ${loan.borrowCoinAmount} $${
             loan.borrowCoinSymbol
           }\nцена покупки ${
@@ -80,7 +82,7 @@ export const loansMenuCQ = async (ctx: MyContext) => {
             loan.inintLTV
           }\n\n- current LTV: ${currentLTV}\n\n- alert LTV: ${
             loan.alertLTV
-          }\n\n${isAlert}\n\n_______________________________________`;
+          }\n\nЧастота отправки уведомлений: ${repetAlertsMessage} cекунд\n${isAlert}\n\n_______________________________________`;
         }
       );
 

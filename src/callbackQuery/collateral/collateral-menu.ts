@@ -49,6 +49,8 @@ export const collateralCoin = async (ctx: MyContext) => {
     );
     ctx.session.collateralCoinInput = true;
     ctx.session.borrowCoinInput = false;
+    ctx.session.alertLTVInput = false;
+    ctx.session.repetAlertsInput = false;
   } catch (error) {
     console.error(error, "collateralCoin");
   }

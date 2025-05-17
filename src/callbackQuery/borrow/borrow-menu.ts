@@ -47,6 +47,8 @@ export const borrowCoin = async (ctx: MyContext) => {
     await ctx.reply(`Введит количество $${symbol}, которое вы заняли`);
     ctx.session.borrowCoinInput = true;
     ctx.session.collateralCoinInput = false;
+    ctx.session.alertLTVInput = false;
+    ctx.session.repetAlertsInput = false;
   } catch (error) {
     console.error(error, "borrowCoin");
   }

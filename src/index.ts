@@ -38,7 +38,8 @@ import {
 } from "./constants/symbols";
 import { turnOffAlert } from "./callbackQuery/edit-loan/turnOffAlert";
 import { turnOnAlert } from "./callbackQuery/edit-loan/turnOnAlert";
-import { repetAlerts } from "./callbackQuery/edit-loan/repetAlerts";
+import { repetAlerts } from "./callbackQuery/edit-loan/edit-loan-menu";
+import { repetAlertsHandler } from "./callbackQuery/edit-loan/repetAlertsHandler";
 
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
@@ -96,6 +97,9 @@ bot.on("message:text", async (ctx, next) => {
     return;
   } else if (ctx.session.alertLTVInput && message) {
     await alertLTVHandler(ctx, message);
+    return;
+  } else if (ctx.session.repetAlertsInput && message) {
+    await repetAlertsHandler(ctx, message);
     return;
   }
   await next();

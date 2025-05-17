@@ -30,7 +30,9 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
     ? "Уведомления включены🔔"
     : "Уведомления отключены🔕";
 
-  const text = `Займ:\n\n- borrow: ${loan[0].borrowCoinAmount} $${loan[0].borrowCoinSymbol}\nцена покупки ${loan[0].borrowCoinInitialPrice}$\nтекущая цена ${borrowCoinCurrentPrice}$\n\n- collateral: ${loan[0].collateralCoinAmount} $${loan[0].collateralCoinSymbol}\nцена покупки ${loan[0].collateralCoinInitialPrice}$\nтекущая цена ${collateralCoinCurrentPrice}$\n\n- initial LTV: ${loan[0].inintLTV}\n\n- current LTV: ${currentLTV}\n\n- alert LTV: ${loan[0].alertLTV}\n\n${isAlert}`;
+  const repetAlertsMessage = loan[0].repetAlerts / 1000;
+
+  const text = `Займ:\n\n- borrow: ${loan[0].borrowCoinAmount} $${loan[0].borrowCoinSymbol}\nцена покупки ${loan[0].borrowCoinInitialPrice}$\nтекущая цена ${borrowCoinCurrentPrice}$\n\n- collateral: ${loan[0].collateralCoinAmount} $${loan[0].collateralCoinSymbol}\nцена покупки ${loan[0].collateralCoinInitialPrice}$\nтекущая цена ${collateralCoinCurrentPrice}$\n\n- initial LTV: ${loan[0].inintLTV}\n\n- current LTV: ${currentLTV}\n\n- alert LTV: ${loan[0].alertLTV}\n\nЧастота отправки уведомлений: ${repetAlertsMessage} cекунд\n${isAlert}`;
 
   const buttonsLoan = loan.map((item) => {
     return {
@@ -76,9 +78,24 @@ export const alertLTV = async (ctx: MyContext, id: string) => {
     await ctx.reply("Введите значение alertLTVHandler");
     ctx.session.curretnLoanId = id;
     ctx.session.alertLTVInput = true;
+    ctx.session.repetAlertsInput = false;
     ctx.session.borrowCoinInput = false;
     ctx.session.collateralCoinInput = false;
   } catch (error) {
     console.log(error, "alertLTV");
+  }
+};
+
+export const repetAlerts = async (ctx: MyContext, id: string) => {
+  try {
+    await ctx.deleteMessage();
+    await ctx.reply("Введите частоту повтора отправки уведомлений, в секундах");
+    ctx.session.curretnLoanId = id;
+    ctx.session.repetAlertsInput = true;
+    ctx.session.alertLTVInput = false;
+    ctx.session.borrowCoinInput = false;
+    ctx.session.collateralCoinInput = false;
+  } catch (error) {
+    console.log(error, "repetAlerts");
   }
 };

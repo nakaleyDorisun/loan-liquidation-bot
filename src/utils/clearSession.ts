@@ -9,4 +9,6 @@ export const clearSession = async (ctx: MyContext) => {
   ctx.session.collateralCoinAmount = 0;
   ctx.session.collateralCoinId = "";
   ctx.session.collateralCoinSymbol = "";
+  ctx.session.alertLTVInput = false;
+  ctx.session.repetAlertsInput = false;
 };
