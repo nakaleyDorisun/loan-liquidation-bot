@@ -2,17 +2,20 @@ import { getCoinByID } from "@/api/getCoinByID";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 import { getLVT } from "./getLVT";
+import { editSymbol } from "@/constants/symbols";
+import { mainMenuCQ } from "./main-menu";
 
 export const loansMenuCQ = async (ctx: MyContext) => {
   if (!ctx.session.loans.length) {
     await ctx.answerCallbackQuery({ text: "У вас нет активных займов" });
+    await mainMenuCQ(ctx);
     return;
   }
   try {
     const buttonsLoans = ctx.session.loans.map((item) => {
       return {
-        text: `❌ $${item.borrowCoinSymbol} + $${item.collateralCoinSymbol}`,
-        callback_data: "_" + item.id,
+        text: ` $${item.borrowCoinSymbol} + $${item.collateralCoinSymbol}`,
+        callback_data: editSymbol + item.id,
       };
     });
     const buttons = [

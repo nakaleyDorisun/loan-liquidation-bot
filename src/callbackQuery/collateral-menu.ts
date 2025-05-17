@@ -1,4 +1,5 @@
 import { getAllCoins } from "@/api/getAllCoins";
+import { collateralCoinSymbol } from "@/constants/symbols";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
@@ -15,7 +16,10 @@ export const collateralMenuCQ = async (ctx: MyContext) => {
         .join("");
       const menuMessage = `${text}\nВыберите монету, которую вы хотите положить в обеспечение:`;
       const buttonsCrypto = response.map((button) => {
-        return { text: button.symbol, callback_data: "%" + button.symbol };
+        return {
+          text: button.symbol,
+          callback_data: collateralCoinSymbol + button.symbol,
+        };
       });
       const buttonsMenu = [
         ...buttonsCrypto,

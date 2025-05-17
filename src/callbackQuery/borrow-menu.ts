@@ -1,4 +1,5 @@
 import { getAllCoins } from "@/api/getAllCoins";
+import { borrowCoinSymbol } from "@/constants/symbols";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
@@ -15,7 +16,10 @@ export const borrowMenuCQ = async (ctx: MyContext) => {
         .join("");
       const menuMessage = `${text}\nВыберите монету, которую вы хотите занять:`;
       const buttonsCrypto = response.map((button) => {
-        return { text: button.symbol, callback_data: "$" + button.symbol };
+        return {
+          text: button.symbol,
+          callback_data: borrowCoinSymbol + button.symbol,
+        };
       });
       const buttonsMenu = [
         ...buttonsCrypto,

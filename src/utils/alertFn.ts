@@ -16,8 +16,6 @@ export const alertFn = async (ctx: MyContext, id: string) => {
 
   const alertLVT = loan[0].alertLVT;
 
-  if (userID) {
-  }
   const alert = setInterval(async () => {
     let currentTLV = 0;
     if (borrowCoinPrice && collateralCoinPrice) {
@@ -28,10 +26,10 @@ export const alertFn = async (ctx: MyContext, id: string) => {
         collateralCoinAmount
       );
     }
-    if (currentTLV > 0.8 && userID) {
+    if (currentTLV > alertLVT && userID) {
       await ctx.api.sendMessage(
         userID,
-        `эй пидор, проснись, твой currentTLV ${currentTLV}, а это выше 0,8, тоби пизда (почти)`
+        `эй пидор, проснись, твой currentTLV ${currentTLV}, а это выше ${alertLVT}, тоби пизда (почти)`
       );
     }
   }, 10000);

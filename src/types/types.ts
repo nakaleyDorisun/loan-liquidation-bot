@@ -1,5 +1,3 @@
-import { collateralCoin } from "./../callbackQuery/collateral-menu";
-import { borrowCoin } from "./../callbackQuery/borrow-menu";
 import { FetchedDataItemType } from "@/api/getAllCoins";
 import { Context } from "grammy";
 
@@ -42,6 +40,7 @@ export type SessionData = {
   alertLVTInput: boolean;
   idAndSymbols: idAndSymbolsItem[];
   loans: Loan[];
+  curretnLoanId: string;
 };
 
 export type MenuItem = {
