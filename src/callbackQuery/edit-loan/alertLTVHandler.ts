@@ -15,7 +15,6 @@ export const alertLTVHandler = async (ctx: MyContext, message: string) => {
         ctx.session.loans.filter((loan) => loan.id === loanId)[0].alertInterval
       );
 
-      await alertFn(ctx, loanId);
       ctx.deleteMessage();
       const message = `Вы установили новый alertLTV: ${alertLTVMessage}`;
       const keyboard = await createInlineKeyboard([

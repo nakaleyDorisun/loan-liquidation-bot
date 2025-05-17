@@ -22,6 +22,8 @@ export const alertFn = async (ctx: MyContext, id: string) => {
 
     const alertLTV = loan[0].alertLTV;
 
+    const repetAlerts = loan[0].repetAlerts;
+
     const alert = setInterval(async () => {
       let currentLTV = 0;
       if (borrowCoinPrice && collateralCoinPrice) {
@@ -48,6 +50,7 @@ export const alertFn = async (ctx: MyContext, id: string) => {
           },
         ];
         const keyboard = await createInlineKeyboard(buttons);
+
         await ctx.api.sendMessage(
           userID,
           `Эй пидор, проснись🦄🎊🎉\nпо твоему займу ${borrowCoinSymbol}-${collateralCoinSymbol}🍀🍀🍀\nна сумму ${borrowCoinCost}$\ncurrentLTV ${currentLTV}🌸🌸🌸\nа это выше ${alertLTV}🐶🐱🐼\nтоби пизда (почти)💖💘🌈`,
@@ -61,10 +64,10 @@ export const alertFn = async (ctx: MyContext, id: string) => {
           "CAACAgIAAxkBAAEOgkZoKE4RNTznT5dSCsc3jRnM7K4eKgACRxkAAjVw0EvfFb2al0cQIjYE"
         );
       }
-    }, 10000);
-    // const length = ctx.session.loans.length;
-    // ctx.session.loans[length - 1].alertInterval = alert;
+    }, repetAlerts);
+
     ctx.session.loans.filter((loan) => loan.id === id)[0].alertInterval = alert;
+    loan[0].alertInterval = alert; //
   } catch (error) {
     console.log(error);
   }

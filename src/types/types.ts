@@ -21,6 +21,7 @@ export type Loan = {
   collateralCoinSymbol: string;
   collateralCoinInitialPrice: number;
   inintLTV: number;
+  repetAlerts: number;
   alertLTV: number;
   alertInterval: NodeJS.Timeout | undefined;
 };
@@ -38,6 +39,7 @@ export type SessionData = {
   collateralCoinId: string;
   alertLTV: number;
   alertLTVInput: boolean;
+  repetAlertsInput: boolean;
   idAndSymbols: idAndSymbolsItem[];
   loans: Loan[];
   curretnLoanId: string;

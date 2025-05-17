@@ -5,6 +5,7 @@ import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import {
   deleteSymbol,
   LTVSymbol,
+  repetAlertsSymbol,
   turnOffAlertSymbol,
   turnOnAlertSymbol,
 } from "@/constants/symbols";
@@ -25,7 +26,6 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
     loan[0].collateralCoinAmount
   );
 
-  console.log(loan[0].alertInterval, "loan[0].alertInterval");
   const isAlert = loan[0].alertInterval
     ? "Уведомления включены🔔"
     : "Уведомления отключены🔕";
@@ -44,6 +44,10 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
     {
       text: "Редактировать Alert LTV",
       callback_data: LTVSymbol + loan[0].id, /// или + id?
+    },
+    {
+      text: "Редактировать таймер оповещений",
+      callback_data: repetAlertsSymbol + loan[0].id, /// или + id?
     },
     {
       text: "Включить🔔",

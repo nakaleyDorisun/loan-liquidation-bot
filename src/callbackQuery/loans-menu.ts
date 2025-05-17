@@ -63,6 +63,11 @@ export const loansMenuCQ = async (ctx: MyContext) => {
             collateralCoinCurrentPrice,
             loan.collateralCoinAmount
           );
+
+          const isAlert = loan.alertInterval
+            ? "Уведомления включены🔔"
+            : "Уведомления отключены🔕";
+
           return `Займ №${index + 1}:\n\n- borrow: ${loan.borrowCoinAmount} $${
             loan.borrowCoinSymbol
           }\nцена покупки ${
@@ -75,7 +80,7 @@ export const loansMenuCQ = async (ctx: MyContext) => {
             loan.inintLTV
           }\n\n- current LTV: ${currentLTV}\n\n- alert LTV: ${
             loan.alertLTV
-          }\n\n_______________________________________`;
+          }\n\n${isAlert}\n\n_______________________________________`;
         }
       );
 

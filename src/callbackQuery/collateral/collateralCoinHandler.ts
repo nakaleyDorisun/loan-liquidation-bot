@@ -68,6 +68,7 @@ export const collateralCoinHandler = async (
           collateralCoinSymbol: ctx.session.collateralCoinSymbol.slice(1),
           collateralCoinInitialPrice: collateralCoinPrice,
           inintLTV: LTV,
+          repetAlerts: 10000,
           alertLTV: alertLTV,
           alertInterval: undefined,
         },

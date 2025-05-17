@@ -32,11 +32,13 @@ import {
   deleteSymbol,
   editSymbol,
   LTVSymbol,
+  repetAlertsSymbol,
   turnOffAlertSymbol,
   turnOnAlertSymbol,
 } from "./constants/symbols";
 import { turnOffAlert } from "./callbackQuery/edit-loan/turnOffAlert";
 import { turnOnAlert } from "./callbackQuery/edit-loan/turnOnAlert";
+import { repetAlerts } from "./callbackQuery/edit-loan/repetAlerts";
 
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
@@ -65,6 +67,7 @@ bot.use(
       collateralCoinId: "",
       alertLTV: 0.8,
       alertLTVInput: false,
+      repetAlertsInput: false,
       idAndSymbols: [],
       loans: [],
       curretnLoanId: "",
@@ -93,6 +96,17 @@ bot.on("message:text", async (ctx, next) => {
     return;
   } else if (ctx.session.alertLTVInput && message) {
     await alertLTVHandler(ctx, message);
+    return;
+  }
+  await next();
+});
+
+/////repet Alerts
+bot.on("callback_query", async (ctx, next) => {
+  const data = ctx.callbackQuery?.data;
+  if (data?.startsWith(repetAlertsSymbol)) {
+    const id = data.slice(1);
+    await repetAlerts(ctx, id);
     return;
   }
   await next();
