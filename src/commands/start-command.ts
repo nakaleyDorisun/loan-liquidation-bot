@@ -12,7 +12,7 @@ export const startCommand = async (ctx: MyContext) => {
     const firstName = ctx.from?.first_name;
     const keyboard = await createInlineKeyboard(menu.buttons);
     const startMessage = await ctx.reply(
-      `Привет, ${firstName}\n\nДобро пожаловать Loan liquidation BOT`,
+      `Привет, ${firstName}\n\nДобро пожаловать в Loan liquidation BOT`,
       {
         reply_markup: keyboard,
         parse_mode: "MarkdownV2",

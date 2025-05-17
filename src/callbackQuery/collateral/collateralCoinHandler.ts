@@ -1,11 +1,11 @@
-import { mathRound } from "./mathRound";
+import { mathRound } from "@/utils/mathRound";
 import { getCoinByID } from "@/api/getCoinByID";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
-import { getLVT } from "./getLVT";
+import { getLVT } from "../../utils/getLVT";
 
 import * as uuid from "uuid";
-import { clearSession } from "./clearSession";
+import { clearSession } from "@/utils/clearSession";
 import { alertFn } from "@/utils/alertFn";
 
 export const collateralCoinHandler = async (

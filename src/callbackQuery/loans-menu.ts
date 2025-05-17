@@ -1,7 +1,7 @@
 import { getCoinByID } from "@/api/getCoinByID";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
-import { getLVT } from "./getLVT";
+import { getLVT } from "../utils/getLVT";
 import { editSymbol } from "@/constants/symbols";
 import { mainMenuCQ } from "./main-menu";
 

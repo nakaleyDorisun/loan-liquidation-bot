@@ -1,5 +1,4 @@
 import { getCoinByID } from "@/api/getCoinByID";
-import { borrowCoin } from "./borrow-menu";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 

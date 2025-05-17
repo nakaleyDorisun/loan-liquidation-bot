@@ -12,17 +12,17 @@ import { MyContext, SessionData } from "./types/types";
 import { startCommand } from "./commands/start-command";
 import { mainMenuCQ } from "./callbackQuery/main-menu";
 import { rateMenuCQ } from "./callbackQuery/rate-menu";
-import { borrowCoin, borrowMenuCQ } from "./callbackQuery/borrow-menu";
-import { borrowCoinHandler } from "./callbackQuery/borrowCoinHandler";
-import { collateralCoinHandler } from "./callbackQuery/collateralCoinHandler";
+import { borrowCoin, borrowMenuCQ } from "./callbackQuery/borrow/borrow-menu";
+import { borrowCoinHandler } from "./callbackQuery/borrow/borrowCoinHandler";
+import { collateralCoinHandler } from "./callbackQuery/collateral/collateralCoinHandler";
 import {
   collateralCoin,
   collateralMenuCQ,
-} from "./callbackQuery/collateral-menu";
+} from "./callbackQuery/collateral/collateral-menu";
 import { loansMenuCQ } from "./callbackQuery/loans-menu";
-import { alertLVTHandler } from "./callbackQuery/alertLVTHandler";
-import { deleteLoanByID } from "./callbackQuery/deleteLoanById";
-import { alertLVT, editLoanMenuCQ } from "./callbackQuery/edit-loan-menu";
+import { alertLVTHandler } from "./callbackQuery/edit-loan/alertLVTHandler";
+import { deleteLoanByID } from "./utils/deleteLoanById";
+import { alertLVT, editLoanMenuCQ } from "./callbackQuery/edit-loan/edit-loan-menu";
 import {
   borrowCoinSymbol,
   collateralCoinSymbol,

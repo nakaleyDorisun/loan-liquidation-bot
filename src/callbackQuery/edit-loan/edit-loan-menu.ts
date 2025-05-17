@@ -1,6 +1,6 @@
 import { getCoinByID } from "@/api/getCoinByID";
 import { MyContext } from "@/types/types";
-import { getLVT } from "./getLVT";
+import { getLVT } from "@/utils/getLVT";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { deleteSymbol, lvtSymbol } from "@/constants/symbols";
 
@@ -33,6 +33,14 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
     {
       text: "Редактировать Alert LVT",
       callback_data: lvtSymbol + loan[0].id,
+    },
+    {
+      text: "Включить🔔",
+      callback_data: "loans",
+    },
+    {
+      text: "Выключить🔕",
+      callback_data: "loans",
     },
     {
       text: "Назад",

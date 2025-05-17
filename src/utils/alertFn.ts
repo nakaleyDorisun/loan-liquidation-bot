@@ -1,5 +1,5 @@
 import { getCoinByID } from "@/api/getCoinByID";
-import { getLVT } from "@/callbackQuery/getLVT";
+import { getLVT } from "@/utils/getLVT";
 import { MyContext } from "@/types/types";
 
 export const alertFn = async (ctx: MyContext, id: string) => {
