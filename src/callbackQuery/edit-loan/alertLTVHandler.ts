@@ -1,6 +1,5 @@
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
-import { alertFn } from "@/utils/alertFn";
 
 export const alertLTVHandler = async (ctx: MyContext, message: string) => {
   try {
@@ -16,7 +15,7 @@ export const alertLTVHandler = async (ctx: MyContext, message: string) => {
       );
 
       ctx.deleteMessage();
-      const message = `Вы установили новый alertLTV: ${alertLTVMessage}`;
+      const message = `Вы установили новый alert LTV: ${alertLTVMessage}`;
       const keyboard = await createInlineKeyboard([
         { text: "Мои займы", callback_data: "loans" },
       ]);
@@ -32,6 +31,6 @@ export const alertLTVHandler = async (ctx: MyContext, message: string) => {
       );
     }
   } catch (error) {
-    console.log(error, "borrowCoinHandler");
+    console.log(error, "alertLTVHandler");
   }
 };

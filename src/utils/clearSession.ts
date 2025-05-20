@@ -11,4 +11,5 @@ export const clearSession = async (ctx: MyContext) => {
   ctx.session.collateralCoinSymbol = "";
   ctx.session.alertLTVInput = false;
   ctx.session.repetAlertsInput = false;
+  ctx.session.curretnLoanId = "";
 };

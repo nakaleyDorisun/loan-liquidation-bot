@@ -1,23 +1,21 @@
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
-export const repetAlertsHandler = async (ctx: MyContext, message: string) => {
+export const borrowCoinEditHandler = async (
+  ctx: MyContext,
+  message: string
+) => {
   try {
-    const repetAlertsMessage = Number(message.trim()) * 1000;
-    if (!isNaN(repetAlertsMessage) && ctx.session.curretnLoanId) {
+    const borrowCoinEditMessage = Number(message.trim());
+    if (!isNaN(borrowCoinEditMessage) && ctx.session.curretnLoanId) {
       const loanId = ctx.session.curretnLoanId;
-
-      ctx.session.loans.filter((loan) => loan.id === loanId)[0].repetAlerts =
-        repetAlertsMessage;
-
-      clearInterval(
-        ctx.session.loans.filter((loan) => loan.id === loanId)[0].alertInterval
-      );
-
+      const loan = ctx.session.loans.find((loan) => loan.id === loanId);
+      const borrowCoinSymbol = loan?.borrowCoinSymbol;
+      if (loan) {
+        loan.borrowCoinAmount = borrowCoinEditMessage;
+      }
       ctx.deleteMessage();
-      const message = `Вы установили частоту отправки уведомлений: ${
-        repetAlertsMessage / 1000
-      } сек`;
+      const message = `Вы установили новый размер borrow: ${borrowCoinEditMessage} --- $${borrowCoinSymbol}`;
       const keyboard = await createInlineKeyboard([
         { text: "Мои займы", callback_data: "loans" },
       ]);
@@ -25,7 +23,7 @@ export const repetAlertsHandler = async (ctx: MyContext, message: string) => {
         reply_markup: keyboard,
         parse_mode: "HTML",
       });
-      ctx.session.alertLTVInput = false;
+      ctx.session.borrowCoinInputEdit = false;
     } else {
       ctx.deleteMessage();
       ctx.reply(
@@ -33,6 +31,6 @@ export const repetAlertsHandler = async (ctx: MyContext, message: string) => {
       );
     }
   } catch (error) {
-    console.log(error, "repetAlertsMessage");
+    console.log(error, "borrowCoinEditHandler");
   }
 };

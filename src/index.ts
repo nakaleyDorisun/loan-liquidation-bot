@@ -12,11 +12,16 @@ import { MyContext, SessionData } from "./types/types";
 import { startCommand } from "./commands/start-command";
 import { mainMenuCQ } from "./callbackQuery/main-menu";
 import { rateMenuCQ } from "./callbackQuery/rate-menu";
-import { borrowCoin, borrowMenuCQ } from "./callbackQuery/borrow/borrow-menu";
+import {
+  borrowCoin,
+  borrowCoinEdit,
+  borrowMenuCQ,
+} from "./callbackQuery/borrow/borrow-menu";
 import { borrowCoinHandler } from "./callbackQuery/borrow/borrowCoinHandler";
 import { collateralCoinHandler } from "./callbackQuery/collateral/collateralCoinHandler";
 import {
   collateralCoin,
+  collateralCoinEdit,
   collateralMenuCQ,
 } from "./callbackQuery/collateral/collateral-menu";
 import { loansMenuCQ } from "./callbackQuery/loans-menu";
@@ -30,6 +35,8 @@ import {
   borrowCoinSymbol,
   collateralCoinSymbol,
   deleteSymbol,
+  editBorrowSymbol,
+  editCollateralSymbol,
   editSymbol,
   LTVSymbol,
   repetAlertsSymbol,
@@ -40,6 +47,9 @@ import { turnOffAlert } from "./callbackQuery/edit-loan/turnOffAlert";
 import { turnOnAlert } from "./callbackQuery/edit-loan/turnOnAlert";
 import { repetAlerts } from "./callbackQuery/edit-loan/edit-loan-menu";
 import { repetAlertsHandler } from "./callbackQuery/edit-loan/repetAlertsHandler";
+import { borrowCoinEditHandler } from "./callbackQuery/borrow/borrowCoinEditHandler";
+import { collateralCoinEditHandler } from "./callbackQuery/collateral/collateralCoinEditHandler";
+import { profileMenuCQ } from "./callbackQuery/profile-menu";
 
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
@@ -58,12 +68,15 @@ bot.use(
     initial: (): SessionData => ({
       data: [],
       user: null,
+      editBorrowSymbol: "",
       borrowCoinSymbol: "",
       borrowCoinInput: false,
+      borrowCoinInputEdit: false,
       borrowCoinAmount: 0,
       borrowCoinId: "",
       collateralCoinSymbol: "",
       collateralCoinInput: false,
+      collateralCoinInputEdit: false,
       collateralCoinAmount: 0,
       collateralCoinId: "",
       alertLTV: 0.8,
@@ -83,6 +96,7 @@ bot.command("start", startCommand);
 
 bot.callbackQuery("main", mainMenuCQ);
 bot.callbackQuery("rate", rateMenuCQ);
+bot.callbackQuery("profile", profileMenuCQ);
 bot.callbackQuery("borrow", borrowMenuCQ);
 bot.callbackQuery("collateral", collateralMenuCQ);
 bot.callbackQuery("loans", loansMenuCQ);
@@ -100,6 +114,12 @@ bot.on("message:text", async (ctx, next) => {
     return;
   } else if (ctx.session.repetAlertsInput && message) {
     await repetAlertsHandler(ctx, message);
+    return;
+  } else if (ctx.session.borrowCoinInputEdit && message) {
+    await borrowCoinEditHandler(ctx, message);
+    return;
+  } else if (ctx.session.collateralCoinInputEdit && message) {
+    await collateralCoinEditHandler(ctx, message);
     return;
   }
   await next();
@@ -160,6 +180,18 @@ bot.on("callback_query", async (ctx, next) => {
   await next();
 });
 
+/////borrow coin edit
+bot.on("callback_query", async (ctx, next) => {
+  const data = ctx.callbackQuery?.data;
+  if (data?.startsWith(editBorrowSymbol)) {
+    console.log("kycb editBorrowSymbol");
+    const id = data.slice(1);
+    await borrowCoinEdit(ctx, id);
+    return;
+  }
+  await next();
+});
+
 /////delete by id
 bot.on("callback_query", async (ctx, next) => {
   const data = ctx.callbackQuery?.data;
@@ -189,6 +221,18 @@ bot.on("callback_query", async (ctx, next) => {
   if (data?.startsWith(collateralCoinSymbol)) {
     ctx.session.collateralCoinSymbol = data;
     await collateralCoin(ctx);
+    return;
+  }
+  await next();
+});
+
+/////collateral coin edit
+bot.on("callback_query", async (ctx, next) => {
+  const data = ctx.callbackQuery?.data;
+  if (data?.startsWith(editCollateralSymbol)) {
+    console.log("kycb editCollateralSymbol");
+    const id = data.slice(1);
+    await collateralCoinEdit(ctx, id);
     return;
   }
   await next();

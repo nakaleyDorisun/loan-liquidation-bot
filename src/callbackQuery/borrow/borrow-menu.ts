@@ -46,10 +46,35 @@ export const borrowCoin = async (ctx: MyContext) => {
     await ctx.deleteMessage();
     await ctx.reply(`Введит количество $${symbol}, которое вы заняли`);
     ctx.session.borrowCoinInput = true;
+    ctx.session.borrowCoinInputEdit = false;
     ctx.session.collateralCoinInput = false;
+    ctx.session.collateralCoinInputEdit = false;
     ctx.session.alertLTVInput = false;
     ctx.session.repetAlertsInput = false;
   } catch (error) {
     console.error(error, "borrowCoin");
+  }
+};
+
+export const borrowCoinEdit = async (ctx: MyContext, id: string) => {
+  try {
+    const loan = ctx.session.loans.filter((loan) => loan.id === id);
+    const borrowlCoinAmount = loan[0].borrowCoinAmount;
+    const borrowCoinInitialPrice = loan[0].borrowCoinInitialPrice;
+    const borrowCoinCost = borrowlCoinAmount * borrowCoinInitialPrice;
+    const symbol = loan[0].borrowCoinSymbol;
+    await ctx.deleteMessage();
+    await ctx.reply(
+      `Введит новое количество $${symbol}, которое вы заняли\n\nТекщий размер займа: ${borrowlCoinAmount} --- $${symbol} --- ${borrowCoinCost}$`
+    );
+    ctx.session.curretnLoanId = id;
+    ctx.session.borrowCoinInputEdit = true;
+    ctx.session.borrowCoinInput = false;
+    ctx.session.collateralCoinInput = false;
+    ctx.session.collateralCoinInputEdit = false;
+    ctx.session.alertLTVInput = false;
+    ctx.session.repetAlertsInput = false;
+  } catch (error) {
+    console.error(error, "borrowCoinEdit");
   }
 };

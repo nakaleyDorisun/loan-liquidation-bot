@@ -47,11 +47,37 @@ export const collateralCoin = async (ctx: MyContext) => {
     await ctx.reply(
       `Введит количество $${symbol}, которое вы положили в обеспечение`
     );
-    ctx.session.collateralCoinInput = true;
     ctx.session.borrowCoinInput = false;
+    ctx.session.borrowCoinInputEdit = false;
+    ctx.session.collateralCoinInput = true;
+    ctx.session.collateralCoinInputEdit = false;
     ctx.session.alertLTVInput = false;
     ctx.session.repetAlertsInput = false;
   } catch (error) {
     console.error(error, "collateralCoin");
+  }
+};
+
+export const collateralCoinEdit = async (ctx: MyContext, id: string) => {
+  try {
+    const loan = ctx.session.loans.filter((loan) => loan.id === id);
+    const collateralCoinAmount = loan[0].collateralCoinAmount;
+    const symbol = loan[0].collateralCoinSymbol;
+    const collateralCoinInitialPrice = loan[0].collateralCoinInitialPrice;
+    const collateralCoinCost =
+      collateralCoinAmount * collateralCoinInitialPrice;
+    await ctx.deleteMessage();
+    await ctx.reply(
+      `Введит новое количество $${symbol}, которое вы положили в обеспечение\n\nТекщее обеспечение: ${collateralCoinAmount} --- $${symbol} --- ${collateralCoinCost}$`
+    );
+    ctx.session.curretnLoanId = id;
+    ctx.session.borrowCoinInput = false;
+    ctx.session.borrowCoinInputEdit = false;
+    ctx.session.collateralCoinInput = false;
+    ctx.session.collateralCoinInputEdit = true;
+    ctx.session.alertLTVInput = false;
+    ctx.session.repetAlertsInput = false;
+  } catch (error) {
+    console.error(error, "collateralCoinEdit");
   }
 };

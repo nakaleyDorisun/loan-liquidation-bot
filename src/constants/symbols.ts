@@ -6,3 +6,5 @@ export const LTVSymbol = "&";
 export const turnOffAlertSymbol = "!";
 export const turnOnAlertSymbol = "@";
 export const repetAlertsSymbol = "*";
+export const editBorrowSymbol = "(";
+export const editCollateralSymbol = ")";

@@ -43,6 +43,16 @@ export const menus: IMenus = {
       },
     ],
   },
+  profile: {
+    text: "Личный кабинет",
+    callbackQuery: "profile",
+    buttons: [
+      {
+        text: "Назад",
+        callback_data: "main",
+      },
+    ],
+  },
   loans: {
     text: "Мои займы",
     callbackQuery: "loans",

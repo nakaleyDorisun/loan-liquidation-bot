@@ -59,6 +59,7 @@ export const collateralCoinHandler = async (
         ...ctx.session.loans,
         {
           id: id,
+          date: new Date().toISOString().split("T")[0],
           borrowCoinId: ctx.session.borrowCoinId,
           borrowCoinAmount: ctx.session.borrowCoinAmount,
           borrowCoinSymbol: ctx.session.borrowCoinSymbol.slice(1),

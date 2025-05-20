@@ -12,6 +12,7 @@ export type idAndSymbolsItem = {
 
 export type Loan = {
   id: string;
+  date: string;
   borrowCoinId: string;
   borrowCoinAmount: number;
   borrowCoinSymbol: string;
@@ -27,13 +28,16 @@ export type Loan = {
 };
 
 export type SessionData = {
+  editBorrowSymbol: string;
   data: FetchedDataItemType[];
   user: number | null;
   borrowCoinSymbol: string;
   borrowCoinInput: boolean;
+  borrowCoinInputEdit: boolean;
   borrowCoinAmount: number;
   borrowCoinId: string;
   collateralCoinInput: boolean;
+  collateralCoinInputEdit: boolean;
   collateralCoinSymbol: string;
   collateralCoinAmount: number;
   collateralCoinId: string;

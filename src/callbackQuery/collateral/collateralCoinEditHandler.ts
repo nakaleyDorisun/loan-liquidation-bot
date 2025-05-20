@@ -1,23 +1,22 @@
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import { MyContext } from "@/types/types";
 
-export const repetAlertsHandler = async (ctx: MyContext, message: string) => {
+export const collateralCoinEditHandler = async (
+  ctx: MyContext,
+  message: string
+) => {
   try {
-    const repetAlertsMessage = Number(message.trim()) * 1000;
-    if (!isNaN(repetAlertsMessage) && ctx.session.curretnLoanId) {
+    const collateralCoinEditMessage = Number(message.trim());
+    if (!isNaN(collateralCoinEditMessage) && ctx.session.curretnLoanId) {
       const loanId = ctx.session.curretnLoanId;
-
-      ctx.session.loans.filter((loan) => loan.id === loanId)[0].repetAlerts =
-        repetAlertsMessage;
-
-      clearInterval(
-        ctx.session.loans.filter((loan) => loan.id === loanId)[0].alertInterval
-      );
+      const loan = ctx.session.loans.find((loan) => loan.id === loanId);
+      const collateralCoinSymbol = loan?.collateralCoinSymbol;
+      if (loan) {
+        loan.collateralCoinAmount = collateralCoinEditMessage;
+      }
 
       ctx.deleteMessage();
-      const message = `Вы установили частоту отправки уведомлений: ${
-        repetAlertsMessage / 1000
-      } сек`;
+      const message = `Вы установили новый размер collateral: ${collateralCoinEditMessage} --- $${collateralCoinSymbol}`;
       const keyboard = await createInlineKeyboard([
         { text: "Мои займы", callback_data: "loans" },
       ]);
@@ -25,7 +24,7 @@ export const repetAlertsHandler = async (ctx: MyContext, message: string) => {
         reply_markup: keyboard,
         parse_mode: "HTML",
       });
-      ctx.session.alertLTVInput = false;
+      ctx.session.collateralCoinInputEdit = false;
     } else {
       ctx.deleteMessage();
       ctx.reply(
@@ -33,6 +32,6 @@ export const repetAlertsHandler = async (ctx: MyContext, message: string) => {
       );
     }
   } catch (error) {
-    console.log(error, "repetAlertsMessage");
+    console.log(error, "collateralCoinEditHandler");
   }
 };

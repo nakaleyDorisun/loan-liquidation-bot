@@ -9,9 +9,12 @@ export const startCommand = async (ctx: MyContext) => {
     if (senderID) {
       ctx.session.user = senderID;
     }
+    ctx.session.borrowCoinInput = false;
+    ctx.session.borrowCoinInputEdit = false;
+    ctx.session.collateralCoinInput = false;
+    ctx.session.collateralCoinInputEdit = false;
     ctx.session.alertLTVInput = false;
-    ctx.session.borrowCoinInput = false;
-    ctx.session.borrowCoinInput = false;
+    ctx.session.repetAlertsInput = false;
     const firstName = ctx.from?.first_name;
     const keyboard = await createInlineKeyboard(menu.buttons);
     const startMessage = await ctx.reply(

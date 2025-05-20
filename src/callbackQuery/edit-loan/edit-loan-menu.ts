@@ -4,6 +4,8 @@ import { getLTV } from "@/utils/getLTV";
 import { createInlineKeyboard } from "@/keyboards/createInlineKeyboard";
 import {
   deleteSymbol,
+  editBorrowSymbol,
+  editCollateralSymbol,
   LTVSymbol,
   repetAlertsSymbol,
   turnOffAlertSymbol,
@@ -44,12 +46,20 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
   const buttons = [
     ...buttonsLoan,
     {
-      text: "Редактировать Alert LTV",
+      text: "Ред. Alert LTV",
       callback_data: LTVSymbol + loan[0].id, /// или + id?
     },
     {
-      text: "Редактировать таймер оповещений",
+      text: "Ред. таймер",
       callback_data: repetAlertsSymbol + loan[0].id, /// или + id?
+    },
+    {
+      text: "Ред. borrow",
+      callback_data: editBorrowSymbol + loan[0].id, /// или + id?
+    },
+    {
+      text: "Ред. collateral",
+      callback_data: editCollateralSymbol + loan[0].id, /// или + id?
     },
     {
       text: "Включить🔔",
@@ -75,12 +85,14 @@ export const editLoanMenuCQ = async (ctx: MyContext, id: string) => {
 export const alertLTV = async (ctx: MyContext, id: string) => {
   try {
     await ctx.deleteMessage();
-    await ctx.reply("Введите значение alertLTVHandler");
+    await ctx.reply("Введите значение alert LTV:");
     ctx.session.curretnLoanId = id;
+    ctx.session.borrowCoinInput = false;
+    ctx.session.borrowCoinInputEdit = false;
+    ctx.session.collateralCoinInput = false;
+    ctx.session.collateralCoinInputEdit = false;
     ctx.session.alertLTVInput = true;
     ctx.session.repetAlertsInput = false;
-    ctx.session.borrowCoinInput = false;
-    ctx.session.collateralCoinInput = false;
   } catch (error) {
     console.log(error, "alertLTV");
   }
@@ -89,12 +101,14 @@ export const alertLTV = async (ctx: MyContext, id: string) => {
 export const repetAlerts = async (ctx: MyContext, id: string) => {
   try {
     await ctx.deleteMessage();
-    await ctx.reply("Введите частоту повтора отправки уведомлений, в секундах");
+    await ctx.reply("Введите частоту отправки уведомлений, в секундах");
     ctx.session.curretnLoanId = id;
-    ctx.session.repetAlertsInput = true;
-    ctx.session.alertLTVInput = false;
     ctx.session.borrowCoinInput = false;
+    ctx.session.borrowCoinInputEdit = false;
     ctx.session.collateralCoinInput = false;
+    ctx.session.collateralCoinInputEdit = false;
+    ctx.session.alertLTVInput = false;
+    ctx.session.repetAlertsInput = true;
   } catch (error) {
     console.log(error, "repetAlerts");
   }

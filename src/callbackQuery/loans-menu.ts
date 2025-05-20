@@ -70,7 +70,9 @@ export const loansMenuCQ = async (ctx: MyContext) => {
 
           const repetAlertsMessage = loan.repetAlerts / 1000;
 
-          return `Займ №${index + 1}:\n\n- borrow: ${loan.borrowCoinAmount} $${
+          return `Займ №${index + 1}:\n-дата создания: ${
+            loan.date
+          }\n\n- borrow: ${loan.borrowCoinAmount} $${
             loan.borrowCoinSymbol
           }\nцена покупки ${
             loan.borrowCoinInitialPrice
